@@ -1,0 +1,19 @@
+{
+  "name": "NextLvl",
+  "description": "NextLvl is a web application for rating people",
+  "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/michaelwolz/NextLvl"
+  },
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "watch": "nodemon server.js"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+  },
+  "license": "MIT"
+}
