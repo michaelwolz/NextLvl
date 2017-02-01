@@ -7,20 +7,25 @@ const personSchema = new Schema({
     name: String,
     surname: String,
     alias: {type: String, required: true, unique: true},
+    notes: String,
     level: {
         type: Number,
         default: 1
     },
     created_at: Date,
     updated_at: Date,
+    //TODO: make attributes dynamic
     attrs: {
-        multiplier: Number,
-        nerdness: Number,
-        techSkill: Number,
-        socialSkill: Number,
-        weirdness: Number,
-        width: Number
+        nerdness: {type: Number, default: 0},
+        techSkill: {type: Number, default: 0},
+        socialSkill: {type: Number, default: 0},
+        style: {type: Number, default: 0},
+        appearance: {type: Number, default: 0},
+        viability: {type: Number, default: 0},
+        weirdness: {type: Number, default: 0},
+        width: {type: Number, default: 0},
     },
+    attrsVeriefied: {type: Boolean, default: true},
     profileImages: [{
         url: String
     }]

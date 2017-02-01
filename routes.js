@@ -8,13 +8,12 @@ const Person = require('./app/models/person');
 //MIDDLEWARE
 router.use(function (req, res, next) {
     //TODO: IMPLEMENT SOME USEFUL STUFF HERE
-    console.log('API CALL');
+    console.log('API CALL: URI >', req.originalUrl, ', HTTP-METHOD >', req.method);
     next();
 });
 
 
 //######### PERSON ROUTES #########
-
 router.route('/person')
 
     .get(function (req, res) {
@@ -57,9 +56,21 @@ router.route('/person/:person_id')
             if (err)
                 res.send(err);
             else {
-                if (!isEmpty(req.body.name)) person.name = req.body.name;
-                if (!isEmpty(req.body.surname)) person.surname = req.body.surname;
-                if (!isEmpty(req.body.alias)) person.alias = req.body.alias;
+                Object.keys(req.body).forEach(function (key) {
+                    if (key != "attrs") {
+                        if (!isEmpty(req.body[key])) person[key] = req.body[key];
+                    } else {
+                        try {
+                            let attrs = JSON.parse(req.body[key]);
+
+                            Object.keys(attrs).forEach(function (attrKey) {
+                                person.attrs[attrKey] = attrs[attrKey]
+                            });
+                        } catch (err) {
+                            console.error("Error while parsing JSON: " + err);
+                        }
+                    }
+                });
 
                 person.save(function (err) {
                     if (err)
