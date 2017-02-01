@@ -1,28 +1,24 @@
+//REQUIREMENTS
 const express = require('express'),
-    exphbs = require('express-handlebars'),
-    http = require('http'),
+    bodyParser = require('body-parser'),
     mongoose = require('mongoose'),
     routes = require('./routes'),
     config = require('./config');
 
-const app = express();
+
+//INIT
 const port = process.env.Port || 8080;
+const app = express();
 
-app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
-app.set ('view engine', 'handlebars');
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
 
-app.disable('etag');
+mongoose.connect('mongodb://localhost/nextlvl');
 
-mongoose.connect('mongodb://localhost/react-tweets');
+//ROUTER
+app.use('/api', routes);
 
-// Index Route
-app.get('/', routes.index);
 
-// Page Route
-app.get('/page/:page/:skip', routes.page);
-
-app.use("/", express.static(__dirname + "/public/"));
-
-const server = http.createServer(app).listen(port, function() {
-    console.log('Express server listening on port ' + port);
-});
+//START SERVER
+app.listen(port);
+console.log('Server running on port: ' + port);
